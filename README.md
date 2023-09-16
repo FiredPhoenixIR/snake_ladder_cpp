@@ -4,4 +4,5 @@
     Player Names
     Statistics
     Save & Load
+    Leaderboard
 ---
