@@ -36,6 +36,16 @@ void loadGame(int &player1, int &player2, int &currentPlayer, int &gamesPlayed, 
     }
 }
 
+// Function to display the leaderboard
+void displayLeaderboard(int gamesPlayed, int player1Wins, int player2Wins, double totalGameDuration) {
+    cout << "********** Leaderboard **********" << endl;
+    cout << "Total Games Played: " << gamesPlayed << endl;
+    cout << "Player 1 Wins: " << player1Wins << endl;
+    cout << "Player 2 Wins: " << player2Wins << endl;
+    cout << "Total Game Duration: " << totalGameDuration << " seconds" << endl;
+    cout << "*********************************" << endl;
+}
+
 int main() {
     srand(time(0)); // Seed for random number generation
     int player1 = 0, player2 = 0;
@@ -162,7 +172,7 @@ int main() {
         double gameDuration = difftime(endTime, startTime);
         totalGameDuration += gameDuration;
 
-        // Who is The Winner
+        // Determine the winner
         if (player1 >= 100) {
             player1Wins++;
             cout << player1Name << " wins!" << endl;
@@ -171,7 +181,10 @@ int main() {
             cout << player2Name << " wins!" << endl;
         }
 
-        // Play another game or save and exit?
+        // Display leaderboard
+        displayLeaderboard(gamesPlayed, player1Wins, player2Wins, totalGameDuration);
+
+        // Ask if the players want to play another game or save and exit
         cout << "Do you want to play another game (1) or save and exit (2)? ";
         cin >> choice;
         if (choice == 2) {
