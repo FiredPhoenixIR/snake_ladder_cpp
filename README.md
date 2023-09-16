@@ -1,2 +1,5 @@
-# snake_ladder_cpp
-simple ladder
+# Snake Ladder C++ Game
+* Features Added By FiredPhoenixIR
+---
+  Player Names
+---
