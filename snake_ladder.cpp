@@ -2,11 +2,38 @@
 #include <cstdlib>
 #include <ctime>
 #include <string>
+#include <fstream> // For file handling
 
 using namespace std;
 
 int rollDice() {
     return rand() % 6 + 1;
+}
+
+// Function to save the game state
+void saveGame(int player1, int player2, int currentPlayer, int gamesPlayed, int player1Wins, int player2Wins, double totalGameDuration) {
+    ofstream saveFile("savegame.txt");
+
+    if (saveFile) {
+        saveFile << player1 << " " << player2 << " " << currentPlayer << " " << gamesPlayed << " " << player1Wins << " " << player2Wins << " " << totalGameDuration << endl;
+        saveFile.close();
+        cout << "Game saved successfully." << endl;
+    } else {
+        cout << "Unable to save the game." << endl;
+    }
+}
+
+// Function to load the game state
+void loadGame(int &player1, int &player2, int &currentPlayer, int &gamesPlayed, int &player1Wins, int &player2Wins, double &totalGameDuration) {
+    ifstream loadFile("savegame.txt");
+
+    if (loadFile) {
+        loadFile >> player1 >> player2 >> currentPlayer >> gamesPlayed >> player1Wins >> player2Wins >> totalGameDuration;
+        loadFile.close();
+        cout << "Game loaded successfully." << endl;
+    } else {
+        cout << "No saved game found." << endl;
+    }
 }
 
 int main() {
@@ -23,6 +50,15 @@ int main() {
     cin >> player1Name;
     cout << "Enter the name of Player 2: ";
     cin >> player2Name;
+
+    // Ask if the players want to start a new game or load a saved game
+    cout << "Do you want to start a new game (1) or load a saved game (2)? ";
+    int choice;
+    cin >> choice;
+
+    if (choice == 2) {
+        loadGame(player1, player2, currentPlayer, gamesPlayed, player1Wins, player2Wins, totalGameDuration);
+    }
 
     while (true) {
         // Reset the board and currentPlayer for a new game
@@ -110,12 +146,23 @@ int main() {
             }
         }
 
+
+            // Add save option during the game
+            cout << "Do you want to save the game and exit? (y/n): ";
+            char saveChoice;
+            cin >> saveChoice;
+            if (saveChoice == 'y' || saveChoice == 'Y') {
+                saveGame(player1, player2, currentPlayer, gamesPlayed, player1Wins, player2Wins, totalGameDuration);
+                return 0;
+            }
+        }
+
         // Calculate game duration
         time_t endTime = time(0);
         double gameDuration = difftime(endTime, startTime);
         totalGameDuration += gameDuration;
 
-        // Determine the winner
+        // Who is The Winner
         if (player1 >= 100) {
             player1Wins++;
             cout << player1Name << " wins!" << endl;
@@ -124,5 +171,14 @@ int main() {
             cout << player2Name << " wins!" << endl;
         }
 
-        // Ask if the players want to play another game
-        cout << "Do you want to play another
+        // Play another game or save and exit?
+        cout << "Do you want to play another game (1) or save and exit (2)? ";
+        cin >> choice;
+        if (choice == 2) {
+            saveGame(player1, player2, currentPlayer, gamesPlayed, player1Wins, player2Wins, totalGameDuration);
+            return 0;
+        }
+    }
+
+    return 0;
+}
